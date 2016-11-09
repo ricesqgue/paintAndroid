@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -80,6 +81,7 @@ public class DrawView extends View {
 
         this.myBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         this.myCanvas = new Canvas(this.myBitmap);
+        this.myCanvas.drawColor(Color.BLACK);
     }
 
     @Override
@@ -150,27 +152,35 @@ public class DrawView extends View {
         this.myBitmap = bitmap;
     }
 
-    public void saveBitmap() {
+    public Boolean saveBitmap() {
 
         Calendar c = Calendar.getInstance();
 
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
-        this.myBitmap.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+        this.myBitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
         try {
             File f = new File(Environment.getExternalStorageDirectory()
-                    + File.separator + "MyPaint" + File.separator +"imagen"+c.get(Calendar.YEAR)+
+                    + File.separator + "Pictures"+ File.separator +"MyPaint" + File.separator +"imagen"+c.get(Calendar.YEAR)+
                     c.get(Calendar.MONTH)+c.get(Calendar.DAY_OF_MONTH)+c.get(Calendar.HOUR)+
-                    c.get(Calendar.MINUTE)+c.get(Calendar.SECOND)+".jpg");
+                    c.get(Calendar.MINUTE)+c.get(Calendar.SECOND)+".png");
             f.createNewFile();
             FileOutputStream fo = new FileOutputStream(f);
             fo.write(bytes.toByteArray());
             fo.close();
-
+            return true;
         } catch (Exception e){
-
+        return false;
         }
 
     }
+
+    public void eraseAll(){
+        this.myBitmap.eraseColor(Color.BLACK);
+
+        invalidate();
+    }
+
+
 }

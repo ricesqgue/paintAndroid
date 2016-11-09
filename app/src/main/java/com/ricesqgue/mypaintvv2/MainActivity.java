@@ -12,13 +12,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileFilter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnColor, btnWidth, btnSave, btnDelete;
+    private Button btnColor, btnWidth, btnSave, btnDelete, btnClear;
     private DrawView drawView;
 
     private ControlColorRGB controlColorRGB;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         this.btnSave = (Button) findViewById(R.id.btnSave);
         this.drawView = (DrawView) findViewById(R.id.drawView);
         this.btnDelete = (Button) findViewById(R.id.btnDelete);
+        this.btnClear = (Button) findViewById(R.id.btnClear);
 
         ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(this,R.style.AppTheme);
         this.controlColorRGB = new ControlColorRGB(this);
@@ -51,20 +53,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public  void deleteFiles(){
-        File[] archivos = new File(Environment.getExternalStorageDirectory()+File.separator+"MyPaint").listFiles(new FileFilter() {
+    public Boolean deleteFiles(){
+        File[] archivos = new File(Environment.getExternalStorageDirectory()+File.separator+"Pictures/MyPaint").listFiles(new FileFilter() {
             public boolean accept(File archivo) {
                 if (archivo.isFile())
-                    return archivo.getName().endsWith(".jpg");
+                    return archivo.getName().endsWith(".png");
                 return false;
             }
         });
         for (File archivo : archivos)
         archivo.delete();
+        return true;
     }
 
     private void inicializaEventos(){
-        final String[] widths = {"5", "10", "15", "20" , "25"};
+        final String[] widths = {"5", "10", "15", "20" , "25", "30"};
         this.btnWidth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
                                         //25
                                         drawView.setMyStrokeWidth(25f);
                                         break;
+                                    case 5:
+                                        //30
+                                        drawView.setMyStrokeWidth(30f);
                                 }
                             }
                         }).show();
@@ -117,37 +123,64 @@ public class MainActivity extends AppCompatActivity {
         this.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(MainActivity.this).setTitle("Save image")
-                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(MainActivity.this).setTitle(R.string.dialog_save_title)
+                        .setPositiveButton(R.string.dialog_save_pbutton, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                drawView.saveBitmap();
+                                if (drawView.saveBitmap()){
+                                    Toast.makeText(MainActivity.this,R.string.dialog_save_success,Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(MainActivity.this,R.string.dialog_save_fail,Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(R.string.dialog_save_nbutton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                }).setMessage("Do you want to save the image?").show();
+                }).setMessage(R.string.dialog_save_message).show();
             }
         });
 
         this.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(MainActivity.this).setTitle("Delete files")
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(MainActivity.this).setTitle(R.string.dialog_delete_title)
+                        .setPositiveButton(R.string.dialog_delete_pbutton, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteFiles();
+                                if (deleteFiles()){
+                                    Toast.makeText(MainActivity.this,R.string.dialog_delete_success,
+                                            Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(R.string.dialog_delete_nbutton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                }).setMessage("Do you want to delete all your images?").show();
+                }).setMessage(R.string.dialog_delete_message).show();
             }
         });
+
+        this.btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(MainActivity.this).setTitle(R.string.dialog_erase_title)
+                        .setPositiveButton(R.string.dialog_erase_pbutton, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                drawView.eraseAll();
+                            }
+                        }).setNegativeButton(R.string.dialog_erase_nbutton, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).setMessage(R.string.dialog_erase_message).show();
+            }
+        });
+
+
     }
 }

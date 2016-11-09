@@ -1,7 +1,21 @@
 <resources>
     <string name="app_name">myPaintvV2</string>
-    <string name="btn_color">Set color</string>
-    <string name="btn_width">Set width</string>
-    <string name="btn_save">Save image</string>
     <string name="dialog_width_title">Choose stroke width</string>
+    <string name="dialog_save_title">Save image</string>
+    <string name="dialog_save_pbutton">Save</string>
+    <string name="dialog_save_nbutton">Cancel</string>
+    <string name="dialog_save_success">Image saved</string>
+    <string name="dialog_save_fail">Error trying to save the image</string>
+    <string name="dialog_save_message">Do you want to save the image?</string>
+
+    <string name="dialog_delete_title">Delete files</string>
+    <string name="dialog_delete_pbutton">Delete</string>
+    <string name="dialog_delete_nbutton">Cancel</string>
+    <string name="dialog_delete_success">Files deleted</string>
+    <string name="dialog_delete_message">Do you want to delete all your images?</string>
+
+    <string name="dialog_erase_title">Restart paint</string>
+    <string name="dialog_erase_pbutton">Restart</string>
+    <string name="dialog_erase_nbutton">Cancel</string>
+    <string name="dialog_erase_message">Do you want to restart your paint?</string>
 </resources>
