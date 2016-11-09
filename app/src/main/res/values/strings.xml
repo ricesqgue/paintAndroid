@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">myPaintvV2</string>
+    <string name="btn_color">Set color</string>
+    <string name="btn_width">Set width</string>
+    <string name="btn_save">Save image</string>
+    <string name="dialog_width_title">Choose stroke width</string>
+</resources>
